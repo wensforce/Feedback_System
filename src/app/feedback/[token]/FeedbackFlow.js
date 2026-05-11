@@ -175,7 +175,7 @@ export default function FeedbackFlow({ token, hasCar, hasBodyguard }) {
         comments: comment.trim() || null,
       };
 
-      const res = await fetch(`/api/feedback?encryptId=${encodeURIComponent(token)}`, {
+      const res = await fetch(`/api/feedback?encryptId=${token}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

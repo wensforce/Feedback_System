@@ -6,6 +6,7 @@ export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
     const encryptId = searchParams.get("encryptId");
+
     if (!encryptId) {
       return new Response(
         JSON.stringify({ error: "Missing assignmentId parameter" }),
@@ -13,9 +14,9 @@ export async function GET(req) {
       );
     }
 
-    // Decode the URL-encoded parameter before decrypting
-    const decodedEncryptId = decodeURIComponent(encryptId);
-    const assignmentId = decrypt(decodedEncryptId);
+    const assignmentId = decrypt(encryptId);
+
+    console.log("decrypted", assignmentId);
 
     const feedback = await prisma.feedback.findFirst({
       where: { assignmentId },

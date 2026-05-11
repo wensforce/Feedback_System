@@ -7,7 +7,7 @@ export default async function FeedbackPage({ params }) {
 
   try {
     // Fetch feedback details from API endpoint
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/feedback?encryptId=${encodeURIComponent(token)}`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/feedback?encryptId=${token}`;
     const response = await fetch(apiUrl);
 
     if (!response.ok) {
