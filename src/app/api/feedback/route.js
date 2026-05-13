@@ -16,7 +16,6 @@ export async function GET(req) {
 
     const assignmentId = decrypt(encryptId);
 
-    console.log("decrypted", assignmentId);
 
     const feedback = await prisma.feedback.findFirst({
       where: { assignmentId },
@@ -122,8 +121,29 @@ export async function POST(req) {
       },
     });
 
-    sendWhatsAppTemplate('thanku_feedback', updatedFeedback.clientPhone, [updatedFeedback.clientName]);
-    sendWhatsAppTemplate('feedback_received', process.env.WHATSAPP_ADMIN_NUMBER, [updatedFeedback.assignmentId, updatedFeedback.clientName, updatedFeedback.servicedate.toDateString()]);
+    // Fire and forget - don't await to keep response time fast
+    sendWhatsAppTemplate('thanku_feedback', updatedFeedback.clientPhone, [updatedFeedback.clientName])
+      .then(result => {
+        if (!result.success) {
+          console.error('Failed to send client thank you message:', result.error);
+        }
+      })
+      .catch(error => console.error('Error sending thank you message:', error));
+
+    console.log('Sending admin feedback to:', process.env.WHATSAPP_ADMIN_NUMBER);
+    console.log('Template data:', {
+      assignmentId: updatedFeedback.assignmentId,
+      clientName: updatedFeedback.clientName,
+      servicedate: updatedFeedback.servicedate?.toDateString(),
+    });
+
+    sendWhatsAppTemplate('feedback_received', process.env.WHATSAPP_ADMIN_NUMBER, [updatedFeedback.assignmentId, updatedFeedback.clientName, updatedFeedback.servicedate.toDateString()])
+      .then(result => {
+        if (!result.success) {
+          console.error('Failed to send admin feedback notification:', result.error);
+        }
+      })
+      .catch(error => console.error('Error sending admin notification:', error));
     
     return new Response(
       JSON.stringify({ message: "Feedback submitted successfully" }),

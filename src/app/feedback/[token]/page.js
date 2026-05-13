@@ -9,8 +9,7 @@ export default async function FeedbackPage({ params }) {
     // Fetch feedback details from API endpoint
     const apiUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/feedback?encryptId=${token}`;
     const response = await fetch(apiUrl);
-
-    console.log('response------->>>>', response);
+ 
 
     if (!response.ok) {
       notFound();
@@ -29,8 +28,7 @@ export default async function FeedbackPage({ params }) {
         hasBodyguard={feedback.hasBodyguard}
       />
     );
-  } catch (error) {
-    console.error('Error fetching feedback:', error);
+  } catch {
     notFound();
   }
 }
