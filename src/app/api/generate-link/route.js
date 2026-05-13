@@ -48,7 +48,11 @@ export async function POST(req) {
     
     const url = `${process.env.BASE_URL}/feedback/${newToken}`;
     
+    try {
     sendWhatsAppTemplate('client_feedback', clientPhone, [clientName, url]);
+    } catch (error) {
+      console.error('Error sending WhatsApp message:', error);
+    }
     const response = new Response(JSON.stringify({ url }), { status: 201 });
     return setCorsHeaders(response, req.headers.get('origin'));
   } catch (error) {
