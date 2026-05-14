@@ -24,6 +24,7 @@ export function setCorsHeaders(response, origin) {
   const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:3001',
+    'http://192.168.1.19:8009/',
     'https://admin.wensforce.com',
   ];
 
