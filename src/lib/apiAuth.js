@@ -21,9 +21,11 @@ export function validateAdminKey(request) {
  * @returns {Response} - Response with CORS headers set
  */
 export function setCorsHeaders(response, origin) {
-  const allowedOrigins = [
-    'https://admin.wensforce.com',
-  ];
+  // const allowedOrigins = [
+  //   'https://admin.wensforce.com',
+  // ];
+
+  const allowedOrigins = ["*"]; // Allow all origins for testing, replace with specific origins in production
 
   if (allowedOrigins.includes(origin)) {
     response.headers.set('Access-Control-Allow-Origin', origin);
