@@ -49,7 +49,8 @@ export async function POST(req) {
     const url = `${process.env.BASE_URL}/feedback/${newToken}`;
     
     try {
-    sendWhatsAppTemplate('client_feedback', clientPhone, [clientName, url]);
+     const res = await sendWhatsAppTemplate('client_feedback', clientPhone, [clientName, url]);
+     console.log('WhatsApp message sent successfully:', res);
     } catch (error) {
       console.error('Error sending WhatsApp message:', error);
     }

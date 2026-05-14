@@ -150,10 +150,11 @@ export async function POST(req) {
     });
 
     try {
-      sendWhatsAppTemplate("thanku_feedback", updatedFeedback.clientPhone, [
+      const res1 = await sendWhatsAppTemplate("thanku_feedback", updatedFeedback.clientPhone, [
         updatedFeedback.clientName,
       ]);
-      sendWhatsAppTemplate(
+      console.log("WhatsApp message sent successfully:", res1);
+      const res2 = await sendWhatsAppTemplate(
         "feedback_received",
         process.env.WHATSAPP_ADMIN_NUMBER,
         [
@@ -162,6 +163,7 @@ export async function POST(req) {
           updatedFeedback.servicedate.toDateString(),
         ],
       );
+      console.log("WhatsApp message sent successfully:", res2);
     } catch (whatsappError) {
       console.error("Error sending WhatsApp message:", whatsappError);
     }
